@@ -3,6 +3,7 @@ class TodoApp {
     constructor() {
         this.todos = [];
         this.currentFilter = 'all';
+        this.nextId = 1;
         this.init();
     }
 
@@ -30,14 +31,17 @@ class TodoApp {
         const saved = localStorage.getItem('todos');
         if (saved) {
             this.todos = JSON.parse(saved);
+            // Set nextId to be greater than any existing id
+            const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
+            this.nextId = maxId + 1;
         } else {
             // Initialize with sample todos from markdown format
             this.todos = [
-                { id: Date.now(), text: 'Learn JavaScript basics', completed: false },
-                { id: Date.now() + 1, text: 'Build a todo app', completed: false },
-                { id: Date.now() + 2, text: 'Practice Git commands', completed: false },
-                { id: Date.now() + 3, text: 'Set up development environment', completed: true },
-                { id: Date.now() + 4, text: 'Create GitHub repository', completed: true }
+                { id: this.nextId++, text: 'Learn JavaScript basics', completed: false },
+                { id: this.nextId++, text: 'Build a todo app', completed: false },
+                { id: this.nextId++, text: 'Practice Git commands', completed: false },
+                { id: this.nextId++, text: 'Set up development environment', completed: true },
+                { id: this.nextId++, text: 'Create GitHub repository', completed: true }
             ];
             this.saveTodos();
         }
@@ -81,7 +85,7 @@ ${completedTasks || '(No completed tasks)'}
         if (text === '') return;
 
         const todo = {
-            id: Date.now(),
+            id: this.nextId++,
             text: text,
             completed: false
         };
