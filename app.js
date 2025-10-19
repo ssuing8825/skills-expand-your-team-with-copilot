@@ -32,7 +32,8 @@ class TodoApp {
         if (saved) {
             this.todos = JSON.parse(saved);
             // Set nextId to be greater than any existing id
-            const maxId = this.todos.reduce((max, todo) => Math.max(max, todo.id), 0);
+            const maxId = this.todos.reduce((max, todo) => 
+                Math.max(max, typeof todo.id === 'number' ? todo.id : 0), 0);
             this.nextId = maxId + 1;
         } else {
             // Initialize with sample todos from markdown format
